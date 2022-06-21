@@ -19,6 +19,7 @@ class Receita(models.Model):
    publicada = models.BooleanField(default=False)
    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE, related_name='receitas', verbose_name='criado por')
    categoria = models.ManyToManyField(Categoria, related_name='receitas', default='Sem categoria')
+   foto_receita = models.ImageField(upload_to='fotos/%d/%m/%Y/', blank=True)
 
    def __str__(self):
       return self.nome_receita
