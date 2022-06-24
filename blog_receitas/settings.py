@@ -40,7 +40,7 @@ INSTALLED_APPS = [
 
     #apps
     'receitas',
-    'pessoas',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -80,13 +80,9 @@ WSGI_APPLICATION = 'blog_receitas.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog_receitas',
-        'USER': 'kaio',
-        'PASSWORD': 'olamundo',
-        'HOST': 'localhost',
-        'PORT': '',
+    'default':{
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -140,3 +136,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 #Caminho da imagem, pq no BD não iremos salvar a imagem e sim, seu caminho
 MEDIA_URL = '/media/'
+
+LOGIN_URL = 'usuarios:login'
+
+#Messages
+from django.contrib.messages import constants as messages
+MESSAGE_TAG = {
+    messages.ERROR: 'danger',
+    messages.SUCCESS: 'success'
+}

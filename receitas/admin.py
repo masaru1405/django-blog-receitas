@@ -7,7 +7,7 @@ admin.site.site_header = "Sistema Interno - Blog Receitas"
 
 @admin.register(Receita)
 class ReceitaAdmin(admin.ModelAdmin):
-   list_display = ['id', 'nome_receita', 'tempo_preparo', 'pessoa', 'publicada']
+   list_display = ['id', 'nome_receita', 'tempo_preparo', 'user', 'publicada']
    list_display_links = ['id', 'nome_receita']
    list_editable = ['publicada']
    search_fields = ['nome_receita']

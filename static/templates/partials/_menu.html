@@ -1,0 +1,11 @@
+<div>
+   {% if user.is_authenticated %}
+      <h3>Olá, {{user.username}}</h3>
+      <a href="{% url 'dashboard' %}">Minhas Receitas</a> | 
+      <a href="{% url 'receita.create' %}">Criar receita</a> |
+      <a href="{% url 'logout' %}">Logout</a>
+   {% else %}
+      <a href="{% url 'cadastro' %}">Cadastro</a> |
+      <a href="{% url 'login' %}">Login</a>
+   {% endif %}
+</div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1>Cadastro</h1>
+   <form action="{% url 'cadastro' %}" method="POST">
+      {% csrf_token %}
+      <label for="nome">Nome completo</label>
+      <input type="text" name="nome" id="nome" required>
+      <br>
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+      <br>
+      <label for="password">Senha</label>
+      <input type="password" name="password" id="password" required>
+      <br>
+      <label for="password2">Confirmação da senha</label>
+      <input type="password" name="password2" id="password2">
+      <br>
+      <button type="submit">Criar sua conta</button>
+   </form>
+   {% include 'partials/_alerts.html' %}
+{% endblock %}

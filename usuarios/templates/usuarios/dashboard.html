@@ -1,0 +1,8 @@
+<h1>Dashboard</h1>
+
+{% for receita in receitas %}
+   <h2>{{receita.nome_receita}}</h2>
+{% endfor %}
+
+
+<a href="{% url 'receita.list' %}">Home</a>

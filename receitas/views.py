@@ -1,8 +1,14 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from .models import Receita
+from django.views.generic import ListView, CreateView, DetailView
+from django.http.response import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
-class ReceitasListView(ListView):
+from .models import Receita
+from .forms import ReceitaForm
+
+class ReceitaListView(ListView):
    model = Receita
    template_name = 'receitas/list.html'
    context_object_name = 'receitas'
@@ -11,10 +17,29 @@ class ReceitasListView(ListView):
    def get_queryset(self):
       return self.model.objects.order_by('-data_publicacao').filter(publicada=True)
    
-class ReceitasDetailView(DetailView):
+class ReceitaDetailView(DetailView):
    model = Receita
    context_object_name = 'receita'
    template_name = 'receitas/detail.html'
+
+class ReceitaCreateView(LoginRequiredMixin, CreateView):
+   model = Receita
+   form_class = ReceitaForm
+   template_name = 'receitas/create.html'
+   #success_url = 'usuarios/dashboard'
+   success_url = reverse_lazy('dashboard')
+   login_url = '/usuarios/login'
+   #success_message = "%(fields) criado com sucesso!"
+
+   """ def get_success_message(self, cleaned_data):
+      print(cleaned_data)
+      return "Receita criada com sucesso!" """
+
+   def form_valid(self, form):
+      self.object = form.save(commit=False)
+      self.object.user = self.request.user
+      self.object.save()
+      return HttpResponseRedirect(self.get_success_url())
 
 
 def buscar(request):

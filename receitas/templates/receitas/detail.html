@@ -25,7 +25,7 @@
    <p>{{receita.categoria}}</p>
    <hr>
    <h3>Postado por</h3>
-   <p>{{receita.pessoa.nome}}</p>
+   <p>{{receita.user}}</p>
    <hr>
-   <a href="{% url 'receitas.list' %}">Home</a>
+   <a href="{% url 'receita.list' %}">Home</a>
 {% endblock %}

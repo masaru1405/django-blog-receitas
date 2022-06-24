@@ -3,7 +3,7 @@
 {% block content %}
    {% for receita in receitas %}
       <h2>
-         <a href="{% url 'receitas.detail' receita.id %}">{{receita.nome_receita}}</a>
+         <a href="{% url 'receita.detail' receita.id %}">{{receita.nome_receita}}</a>
       </h2>
    {% endfor %}
 
