@@ -14,11 +14,11 @@ def cadastro(request):
       senha = request.POST['password']
       senha2 = request.POST['password2']
       
-      #se nulo (a função strip tira espaços em branco)
-      if not nome.strip():
+      
+      if campo_vazio(nome):
          messages.error(request, 'O campo nome não pode ficar em branco')
          return redirect('cadastro')
-      if not email.strip():
+      if campo_vazio(email):
          messages.error(request, 'O campo email não pode ficar em branco')
          return redirect('cadastro')
       if senha != senha2:
@@ -26,6 +26,10 @@ def cadastro(request):
          return redirect('cadastro')
       #Verifica se o usuario já tem cadastro através do campo email
       if User.objects.filter(email=email).exists():
+         messages.error(request, 'Usuário já cadastrado')
+         return redirect('cadastro')
+      #Alura: Parte 3-Autenticação no Django...|05.Refatoração e mensagens | Vídeo 02 - 06min
+      if User.objects.filter(username=nome).exists():
          messages.error(request, 'Usuário já cadastrado')
          return redirect('cadastro')
 
@@ -70,8 +74,14 @@ class Dashboard(LoginRequiredMixin, ListView):
    context_object_name = 'receitas'
    template_name = 'usuarios/dashboard.html'
    login_url = '/usuarios/login'
+   paginate_by = 2
 
    def get_queryset(self):
       return self.request.user.receitas.all()
 
+
+def campo_vazio(campo):
+   #A função strip tira espaços em branco
+   #return not x, irá retornar True se x for nulo (None)
+   return not campo.strip()
 

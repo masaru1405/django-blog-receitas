@@ -1,8 +1,15 @@
 <h1>Dashboard</h1>
 
+{% include 'partials/_alerts.html' %}
+
 {% for receita in receitas %}
    <h2>{{receita.nome_receita}}</h2>
+   <a href="{% url 'receita.update' receita.id %}">Editar</a> |
+   <a href="{% url 'receita.delete' receita.id %}">Deletar</a>
+   <hr>
 {% endfor %}
 
+<!--Pagination-->
+{% include 'partials/_paginator.html' %}
 
 <a href="{% url 'receita.list' %}">Home</a>

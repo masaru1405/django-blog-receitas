@@ -1,0 +1,10 @@
+
+
+{% block content %}
+   <form method="POST">
+      {% csrf_token %}
+      <p>Você tem certeza que quer deletar "{{receita.nome_receita}}"?</p>
+      <p>Esta ação não pode ser desfeita</p>
+      <input type="submit" value="Deletar">
+   </form>
+{% endblock %}

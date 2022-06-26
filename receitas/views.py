@@ -1,21 +1,36 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView
+from django.views.generic.edit import DeleteView
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.messages.views import SuccessMessageMixin
+#from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Receita
 from .forms import ReceitaForm
+
+class ReceitaDeleteView(DeleteView):
+   model = Receita
+   context_object_name = 'receita'
+   success_url = reverse_lazy('dashboard')
+   template_name = 'receitas/delete.html'
 
 class ReceitaListView(ListView):
    model = Receita
    template_name = 'receitas/list.html'
    context_object_name = 'receitas'
+   paginate_by = 2
 
    #retorna apenas as receitas com o campo 'publicada' igual a True
    def get_queryset(self):
       return self.model.objects.order_by('-data_publicacao').filter(publicada=True)
+
+class ReceitaUpdateView(LoginRequiredMixin, UpdateView):
+   model = Receita
+   success_url = reverse_lazy('dashboard')
+   form_class = ReceitaForm
+   template_name = 'receitas/update.html'
    
 class ReceitaDetailView(DetailView):
    model = Receita
@@ -26,19 +41,15 @@ class ReceitaCreateView(LoginRequiredMixin, CreateView):
    model = Receita
    form_class = ReceitaForm
    template_name = 'receitas/create.html'
-   #success_url = 'usuarios/dashboard'
    success_url = reverse_lazy('dashboard')
    login_url = '/usuarios/login'
-   #success_message = "%(fields) criado com sucesso!"
-
-   """ def get_success_message(self, cleaned_data):
-      print(cleaned_data)
-      return "Receita criada com sucesso!" """
 
    def form_valid(self, form):
       self.object = form.save(commit=False)
       self.object.user = self.request.user
       self.object.save()
+      #https://stackoverflow.com/questions/39999956/django-how-to-send-a-success-message-using-a-updateview-cbv
+      messages.success(self.request, "Receita criada com sucesso!")
       return HttpResponseRedirect(self.get_success_url())
 
 

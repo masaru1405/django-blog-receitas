@@ -11,8 +11,19 @@ class ReceitaAdmin(admin.ModelAdmin):
    list_display_links = ['id', 'nome_receita']
    list_editable = ['publicada']
    search_fields = ['nome_receita']
-   #list_filter = ['categoria']
-   list_per_page = 5
+   list_filter = ['user']
+   list_per_page = 10
+
+   #campos editáveis no painel admin (na hora de criar iremos ter estes campos)
+   fields = ['nome_receita', 'ingredientes', 'modo_preparo', 'tempo_preparo', 'rendimento', 'categoria', 'data_publicacao', 'data_modificacao', 'publicada', 'foto_receita', 'user']
+
+   readonly_fields = ['data_publicacao', 'data_modificacao']
+   
+   #já deixa marcado o usuário que está logado no campo 'user'
+   def get_changeform_initial_data(self, request):
+      form = super(ReceitaAdmin, self).get_changeform_initial_data(request)
+      form['user'] = request.user.pk
+      return form
 
 
 @admin.register(Categoria)
