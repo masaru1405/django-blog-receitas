@@ -1,22 +1,26 @@
+<!--Usando Elided Page 'omitir páginas', não sei se funciona-->
+
 {% if is_paginated %}
    {% if page_obj.has_previous %}
-      <a href="?page={{1}}">Primeira</a>
       <a href="?page={{page_obj.previous_page_number}}">&laquo;</a>
    {% else %}
       <a>&laquo;</a>
    {% endif %}
 
-   {% for i in paginator.page_range %}
+   {% for i in page_obj.get_elided_page_range %}
       {% if page_obj.number == i %}
          <a>{{i}}</a>
       {% else %}
-         <a href="?page={{i}}">{{i}}</a>
+         {% if i == page_obj.paginator.ELLIPSIS %}
+            <a>{{paginator.ELLIPSIS}}</a>
+         {% else %}
+            <a href="?page={{i}}">{{i}}</a>
+         {% endif %}
       {% endif %}
    {% endfor %}
 
    {% if page_obj.has_next %}
       <a href="?page={{page_obj.next_page_number}}">&raquo;</a>
-      <a href="?page={{page_obj.paginator.num_pages}}">Último</a>
    {% else %}
       <a>&raquo;</a>
    {% endif %}

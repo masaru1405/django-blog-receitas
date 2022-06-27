@@ -5,6 +5,7 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 #from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import Receita
@@ -16,6 +17,7 @@ class ReceitaDeleteView(DeleteView):
    success_url = reverse_lazy('dashboard')
    template_name = 'receitas/delete.html'
 
+
 class ReceitaListView(ListView):
    model = Receita
    template_name = 'receitas/list.html'
@@ -25,6 +27,17 @@ class ReceitaListView(ListView):
    #retorna apenas as receitas com o campo 'publicada' igual a True
    def get_queryset(self):
       return self.model.objects.order_by('-data_publicacao').filter(publicada=True)
+
+""" def list(request):
+   receitas = Receita.objects.order_by('-data_publicacao').filter(publicada=True)
+   paginator = Paginator(receitas, 2)
+
+   #identifica a 'page' atual
+   page_number = request.GET.get('page') 
+   page_object = paginator.get_page(page_number)
+   page_object.adjusted_elided_pages = paginator.get_elided_page_range(page_number)
+   context = {'page_obj': page_object}
+   return render(request, 'receitas/list.html', context) """
 
 class ReceitaUpdateView(LoginRequiredMixin, UpdateView):
    model = Receita
@@ -54,6 +67,7 @@ class ReceitaCreateView(LoginRequiredMixin, CreateView):
 
 
 def buscar(request):
+   """ Função que realiza uma busca pelo nome da receita que está publicada """
    #Só pode pesquisar as receitas que foram publicadas
    receitas = Receita.objects.order_by('data_publicacao').filter(publicada=True)
 
